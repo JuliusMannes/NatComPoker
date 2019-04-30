@@ -6,7 +6,7 @@
   Here you can find instructions to set up the PyPokerEnvironment and how to play around with it. 
   
 ## Proposal 
-  ![Proposal](https://github.com/JuliusMannes/NatComPoker/blob/master/Proposal.pdf)
+  [Proposal](https://github.com/JuliusMannes/NatComPoker/blob/master/Proposal.pdf)
   
 ## References 
   Here is a paper that uses a formula based approach:
