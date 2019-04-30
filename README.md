@@ -1,6 +1,6 @@
 # NatComPoker
   Final Project of the course Natural Computing - an evolutionary Pokerbot
-  ![Retina](https://github.com/JuliusMannes/NatComPoker/master/images/project.png)
+  ![Poker](https://github.com/JuliusMannes/NatComPoker/master/imgs/img.png)
 ## Resources 
   https://medium.com/@andreasthiele/building-your-own-no-limit-texas-holdem-poker-bot-in-python-cd9919302c1c
   Here you can find instructions to set up the PyPokerEnvironment and how to play around with it. 
