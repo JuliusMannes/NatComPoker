@@ -13,6 +13,7 @@ class HonestPlayer(BasePokerPlayer):
                 hole_card=gen_cards(hole_card),
                 community_card=gen_cards(community_card)
                 )
+                #print(win_rate)
         if win_rate >= 1.0 / self.nb_player:
             action = valid_actions[1]  # fetch CALL action info
         else:
