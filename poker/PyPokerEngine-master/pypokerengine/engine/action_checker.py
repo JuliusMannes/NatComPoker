@@ -41,7 +41,10 @@ class ActionChecker:
     return [
         { "action" : "fold" , "amount" : 0 },
         { "action" : "call" , "amount" : self.agree_amount(players) },
-        { "action" : "raise", "amount" : { "min": min_raise, "max": max_raise } }
+        { "action" : "raise_S", "amount" : 10 },
+        { "action" : "raise_M", "amount" : 20 },
+        { "action" : "raise_L", "amount" : 40 },
+        { "action" : "raise_XL", "amount" : 80 }
     ]
 
   @classmethod
