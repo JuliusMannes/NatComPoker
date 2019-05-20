@@ -38,14 +38,17 @@ class ActionChecker:
     max_raise = players[player_pos].stack + players[player_pos].paid_sum()
     if max_raise < min_raise:
       min_raise = max_raise = -1
-    return [
+    actions = [
         { "action" : "fold" , "amount" : 0 },
-        { "action" : "call" , "amount" : self.agree_amount(players) },
-        { "action" : "raise_S", "amount" : 10 },
-        { "action" : "raise_M", "amount" : 20 },
-        { "action" : "raise_L", "amount" : 40 },
-        { "action" : "raise_XL", "amount" : 80 }
-    ]
+        { "action" : "call" , "amount" : self.agree_amount(players) }
+        ]
+    raise_values = [10, 20, 40, 80]
+    for val in raise_values:
+        if(max_raise < val):
+            actions.append({ "action" : "raise", "amount" : max_raise})
+        else:
+            actions.append({ "action" : "raise", "amount" : val})
+    return actions
 
   @classmethod
   def _is_legal(self, players, player_pos, sb_amount, action, amount=None):
