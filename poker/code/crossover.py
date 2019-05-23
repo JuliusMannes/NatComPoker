@@ -12,24 +12,26 @@ class CrossOver():
           self.parent1 = 0 
           self.parent2 = 0
                 
-    def get_parents():
-        parent_1,parent_2 = choice(len(net[0:,]),2,p=fit)
+    def get_parents(self):
+        print(self.fit)
+        parent_1,parent_2 = choice(len(self.net[0:,]),2,p=self.fit)
         self.parent1 = parent1
         self.parent2 = parent2 #maybe better to use return
     #TODO: instead of 50/50 weights from parents, make it based on fitness from parents
-    
+
     def make_child(self, z): ##add randomness
         child =[]
-        for x in range(len(parent1)):
+        self.get_parents()
+        for x in range(len(self.parent1)):
             r = random.random()
             if r > 0.5: 
-                child.append(parent1[0][x])
+                child.append(self.parent1[0][x])
             else:
-                child.append(parent2[0][x])
+                child.append(self.parent2[0][x])
         for x in range(len(parent1)):
             r = random.random()
             if r > 0.5: 
-                child.append(parent1[1][x])
+                child.append(self.parent1[1][x])
             else:
                 child.append(parent2[1][x])
         child = mutate(child)

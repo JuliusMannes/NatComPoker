@@ -32,20 +32,18 @@ class ActionChecker:
     return last_raise["amount"] if last_raise else 0
 
 
-  @classmethod
+    @classmethod
   def legal_actions(self, players, player_pos, sb_amount):
     min_raise = self.__min_raise_amount(players, sb_amount)
     max_raise = players[player_pos].stack + players[player_pos].paid_sum()
     if max_raise < min_raise:
-      min_raise = max_raise = -1
+        min_raise = max_raise = -1
     return [
-        { "action" : "fold" , "amount" : 0 },
-        { "action" : "call" , "amount" : self.agree_amount(players) },
-        { "action" : "raise_S", "amount" : 10 },
-        { "action" : "raise_M", "amount" : 20 },
-        { "action" : "raise_L", "amount" : 40 },
-        { "action" : "raise_XL", "amount" : 80 }
+    { "action" : "fold" , "amount" : 0 },
+    { "action" : "call" , "amount" : self.agree_amount(players) },
+    { "action" : "raise", "amount" : { "min": min_raise, "max": max_raise } }
     ]
+
 
   @classmethod
   def _is_legal(self, players, player_pos, sb_amount, action, amount=None):

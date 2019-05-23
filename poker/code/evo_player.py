@@ -37,12 +37,14 @@ class EvoPlayer(BasePokerPlayer):
     def add_game_win(self):
         self.games_played += 1
         self.games_won += 1
-    
+        print("ADD WIN")
     
     def add_game_lose(self):
         self.games_played += 1
 
     def get_fitness(self):
+        print("won", self.games_won)
+        print("total", self.games_played)
         return self.games_won/self.games_played
 
     def get_w(self):

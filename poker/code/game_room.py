@@ -47,7 +47,9 @@ class GameRoom():
        for x in range(len(self.players) - mu):
                            co = CrossOver(nets,fitness)
                            children.append(co.make_child(z))
+       
        for c in children:
+           print(c.get_name())
            nextGen.append(c)
            
        self.players = nextGen
@@ -59,33 +61,37 @@ class GameRoom():
                 self.players = self.shuffle_players()
                 self.play_game()
             print("NEW GENERATION")
-            self.update_generation(12, z)
-        
-        
-    def play_game(self):
-        for x in range(len(self.players)):
-            #table is empty:
-            if(x%4 == 0):
-                config = setup_config(max_round=10, initial_stack=200, small_blind_amount=10)
-            config.register_player(name=self.players[x].get_name(),algorithm = self.players[x])
-                           
-            #table is full:
-            if x%4 == 3 or x == len(self.players):
-                print("play game")
-                game_result = start_poker(config, verbose=1)
-                print(game_result['players'])
-                winner = ""
-                #extract winner:
-                for stack, uuid, name, state in game_result['players']:
-                    if state == 'participating':
-                        winner = name
-                for player in self.players:
-                    if player.name == winner:
-                        player.add_game_win()
-                    else:
-                        player.add_game_lose()
-                           ##NEED TO EXTRACT WINNING PLAYER AND UPDATE WIN/LOSS OF EVERY PLAYER
-                          
+            self.update_generation(4, z)
 
+    def find_winner(self, game_result):
+        stacks = []
+        players = []
+        for x in game_result['message']['game_information']['seats']:
+            stacks.append((x['stack']))
+            idx = stacks.index(max(stacks))
+            players.append(x['name'])
+        winner = players[idx]
+        return winner
+            
+    def play_game(self):
+        tables  =2
+        for table in range(tables):
+            players = self.players[table*4:4*(table+1)]
+            config = setup_config(max_round=1, initial_stack=200, small_blind_amount=10)
+            for p in players:
+                config.register_player(name=p.get_name(),algorithm = p)
+                print("added a player")
+            print("play game")
+            game_result = start_poker(config, verbose=2)
+            winner = self.find_winner(game_result)
+            
+            for p in players:
+                if  p.name == winner:
+                    #print("WE ADD A GAME WIN")
+                    p.add_game_win()
+                else:
+                    p.add_game_lose()                                #extract winner:
+
+                      
                            
        
