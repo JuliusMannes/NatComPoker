@@ -22,16 +22,37 @@ class EvoPlayer(BasePokerPlayer):
     def __init__(self, neuralnet, name):
         self.name = name
         self.model = neuralnet
+        self.games_played = 0
+        self.games_won = 0
         neuralnet.summary()
         self.hole_card = []
         self.all_cards = []
         self.inputs = np.random.random((1, 8))
         # money in pot, street, #player number, dealer button, small blind pos, big blind pos, round count, small blind amount, cardvalue
+    def get_name(self):
+        return self.name
+        
+    def add_game_win(self):
+        self.games_played += 1
+        self.games_won += 1
+    
+    def add_game_lose(self)
+        self.games_played += 1
+
+    def get_fitness(self):
+        return self.games_won/self.games_played
+
+    def get_w(self):
+        first = self.model.get_layer('first').get_weights()
+        second = self.model.get_layer('second').get_weights()
+        return (first, second)
     
     def declare_action(self, valid_actions, hole_card, round_state):
         #print(valid_actions)
         #print(self.inputs.shape)
-        
+        print("pot: ", round_state['pot'])
+        print("sb: ",round_state['small_blind_pos'])
+        print("bb: ",round_state['big_blind_pos'])
         community_card = round_state['community_card']
         self.inputs[0][7] = estimate_hole_card_win_rate(nb_simulation=NB_SIMULATION,
                                                nb_player=int(self.inputs[0][2]),
@@ -41,7 +62,7 @@ class EvoPlayer(BasePokerPlayer):
           
         predictions = self.model.predict(self.inputs)
         choice = np.argmax(predictions[0])
-        
+ 
         action = valid_actions[choice]
         
         #print(action['action'])

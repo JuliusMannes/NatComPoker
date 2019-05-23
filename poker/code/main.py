@@ -13,11 +13,11 @@ print("hello world")
 models = []
 for x in range(8):
     a = Input(shape=(8,))
-    b = Dense(6)(a)
-    c = Dense(5)(b)
+    b = Dense(6, name = 'first')(a)
+    c = Dense(5, name = 'second')(b)
     models.append(Model(inputs=a, outputs=c))
 
-game_room = GameRoom(models)
+game_room = GameRoom(models, generations)
 game_room.start()
 
 #config.register_player(name="f2", algorithm=FishPlayer())

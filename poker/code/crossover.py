@@ -5,12 +5,11 @@ import random
 from numpy.random import choice
 class CrossOver():
                 
-    def __init__(self, net, fit, kids):
+    def __init__(self, net, fit):
           self.net = net
           self.fit = fit
           self.parent1 = 0 
           self.parent2 = 0
-          self.kids = kids
                 
     def get_parents():
         parent_1,parent_2 = choice(len(net[0:,]),2,p=fit)
@@ -26,14 +25,10 @@ class CrossOver():
                 child.append(parent1[x])
             else:
                 child.append(parent2[x])
+        child = mutate(child)
         return child
     
-    
-    def make_children():
-        children = []
-        for x in range(kids):
-            children.append(make_child)
-        return children
+
     
     def mutate(ind):
         for x in range(len(ind)):
@@ -44,3 +39,30 @@ class CrossOver():
                 else:
                     ind[x] = ind[x]*1.1
         return ind        
+
+
+    def print_status():
+        # open a (new) file to write
+        outF = open("myOutFile.txt", "w")
+        for line in range(len(net)):
+            # write weights to output file
+            outF.write("writing weights no: " , line)
+            outF.write("\n")
+            outF.write(net[line])
+            outF.write("\n")
+        for line in range(len(fit)):
+            # write fitnesses to output file
+            outF.write("writing fitness no: " , line)
+            outF.write("\n")
+            outF.write(fit[line])
+            outF.write("\n")
+                outF.write("parent1:")
+                outF.write("\n")
+                outF.write(self.parent1)
+                outF.write("\n")
+                outF.write("parent2:")
+                outF.write("\n")
+                outF.write(self.parent2)
+                outF.write("\n")
+                outF.close()
+
