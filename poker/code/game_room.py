@@ -13,80 +13,79 @@ from crossover import CrossOver
 
 class GameRoom():
 
-    def __init__(self, algorithms, generations):
+    def __init__(self, algorithms, generations, rounds_per_gen):
         self.algorithms = np.array(algorithms)
         self.generations = generations
-        indices = np.arange(len(algorithms))
+        self.rounds_per_gen = rounds_per_gen
+        self.players = self.init_players()
+        self.players = self.shuffle_players()
+        
+    def shuffle_players(self):
+        indices = np.arange(len(self.players))
         np.random.shuffle(indices)
-        print(indices)
-        print(self.algorithms)
-        self.algs_random = self.algorithms[indices]
-        self.players = makeFirstPlayers()
+        return np.array(self.players)[indices]
 
-    def makeFirstPlayers(self):
+    def init_players(self):
         players = []
-        for x in range(len(self.algs_random)):
-            players.append(EvoPlayer(self.algs_random[x],"player "+ str(x))
-       return players
+        for x in range(len(self.algorithms)):
+            players.append(EvoPlayer(self.algorithms[x],"player "+ str(x)))
+        return players
                            
-    def makeNextPlayers(self, old, new, generation):
+    def update_generation(self, mu, z):
        nextGen = []
-       while(len(nextGen) < (new/2)):
-                           nextGen.append(choice(old,1,p=0.5)) #maybe different p
+       ranked_players = sorted(self.players, key=lambda x: x.games_won, reverse=True)
+       mu_ranked_players = ranked_players[:mu]
+       for p in mu_ranked_players:
+           nextGen.append(p)
+       #To-do: mutation and crossover
        nets = []
        fitness = []
-       for player in self.players:
+       for player in mu_ranked_players:
                            nets.append(player.get_w())
                            fitness.append(player.get_fitness())
        children = []
-       for x in range(new):
+       for x in range(len(self.players) - mu):
                            co = CrossOver(nets,fitness)
-                           children.append(co.make_child())
-       denominator = 0
-       while(len(nextGen) < new):
-                           child = choice(children,1,p=0.5)
-                           myInit = ##assign weight
-                           a = Input(shape=(8,))
-                           b = Dense(6, name = 'first', kernel_initializer = myInit)(a)
-                           c = Dense(5, name = 'second', kernel_initializer = myInit)(b)
-                           model = Model(inputs=a,outputs=c)
-                           nextGen.append(EvoPlayer(model, "player " + str(generation) +"-"+str(denominator))
-                           denominator += 1
+                           children.append(co.make_child(z))
+       for c in children:
+           nextGen.append(c)
+           
        self.players = nextGen
             
-    def start(self):
-        for x in range(len(self.algs_random)):
+    #start function
+    def play_rounds(self):
+        for z in range(self.generations):
+            for x in range(self.rounds_per_gen):
+                self.players = self.shuffle_players()
+                self.play_game()
+            print("NEW GENERATION")
+            self.update_generation(12, z)
+        
+        
+    def play_game(self):
+        for x in range(len(self.players)):
             #table is empty:
             if(x%4 == 0):
-                config = setup_config(max_round=100, initial_stack=200, small_blind_amount=10)
-            config.register_player(name="player " + str(x),algorithm = self.players[x])
+                config = setup_config(max_round=10, initial_stack=200, small_blind_amount=10)
+            config.register_player(name=self.players[x].get_name(),algorithm = self.players[x])
                            
             #table is full:
-            if(x%4 == 3):
+            if x%4 == 3 or x == len(self.players):
+                print("play game")
                 game_result = start_poker(config, verbose=1)
-                print(game_result)
-        game_result = start_poker(config, verbose=1)
+                print(game_result['players'])
+                winner = ""
+                #extract winner:
+                for stack, uuid, name, state in game_result['players']:
+                    if state == 'participating':
+                        winner = name
+                for player in self.players:
+                    if player.name == winner:
+                        player.add_game_win()
+                    else:
+                        player.add_game_lose()
                            ##NEED TO EXTRACT WINNING PLAYER AND UPDATE WIN/LOSS OF EVERY PLAYER
-  def next(self):
-      for x in range(len(self.algs_random)):
-          #table is empty:
-          if(x%4 == 0):
-              config = setup_config(max_round=100, initial_stack=200, small_blind_amount=10)
-              config.register_player(name="player " + str(x),algorithm = self.players[x])
-              
-          #table is full:
-          if(x%4 == 3):
-              game_result = start_poker(config, verbose=1)
-              print(game_result)
-      game_result = start_poker(config, verbose=1)
-      ##NEED TO EXTRACT WINNING PLAYER AND UPDATE WIN/LOSS OF EVERY PLAYER
-                                          
-   def doIt(self):
-       start()
-       for x in range(generations):
-                           makeNextPlayers()
-                           next()
+                          
+
                            
-            
-                  ##PLOT TOEVOEGEN
        

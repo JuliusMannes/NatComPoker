@@ -4,6 +4,8 @@ from pypokerengine.engine.hand_evaluator import HandEvaluator
 from keras.models import Model
 from keras.layers import Input, Dense
 import numpy as np
+import random
+
 NB_SIMULATION = 1000
 #input indices :
 
@@ -36,7 +38,8 @@ class EvoPlayer(BasePokerPlayer):
         self.games_played += 1
         self.games_won += 1
     
-    def add_game_lose(self)
+    
+    def add_game_lose(self):
         self.games_played += 1
 
     def get_fitness(self):
@@ -67,6 +70,9 @@ class EvoPlayer(BasePokerPlayer):
         
         #print(action['action'])
         #print(action['amount'])
+        if action['action'] == "raise":
+            #action['amount'] = (action['amount']['max'] - action['amount']['min'])*random.random() + action['amount']['min']
+            action['amount'] = action['amount']['max']
         
       
         return action['action'], action['amount']
@@ -82,6 +88,7 @@ class EvoPlayer(BasePokerPlayer):
         self.hole_card = hole_card
         self.all_cards = []
         pass
+    
     def receive_street_start_message(self, street, round_state):
         self.inputs[0][0] = round_state['pot']['main']['amount']
         self.inputs[0][1] = street_to_int(round_state['street'])
