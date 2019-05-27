@@ -46,10 +46,17 @@ class EvoPlayer(BasePokerPlayer):
         print("won", self.games_won)
         print("total", self.games_played)
         return self.games_won/self.games_played
+    
+    def get_bias(self):
+        first = self.model.get_layer('first').get_weights()[1]
+        second = self.model.get_layer('second').get_weights()[1]
+        return (first, second)
 
     def get_w(self):
-        first = self.model.get_layer('first').get_weights()
-        second = self.model.get_layer('second').get_weights()
+        first = self.model.get_layer('first').get_weights()[0]
+        second = self.model.get_layer('second').get_weights()[0]
+        print("SHAPE", self.model.get_layer('second').get_weights()[0].shape)
+        print("SECOND", second)
         return (first, second)
     
     def declare_action(self, valid_actions, hole_card, round_state):

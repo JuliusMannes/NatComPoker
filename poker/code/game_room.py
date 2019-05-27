@@ -36,20 +36,23 @@ class GameRoom():
        ranked_players = sorted(self.players, key=lambda x: x.games_won, reverse=True)
        mu_ranked_players = ranked_players[:mu]
        for p in mu_ranked_players:
+           print("NEXTGEN PLAYER NAME: " , p.name)
            nextGen.append(p)
        #To-do: mutation and crossover
        nets = []
        fitness = []
+       biases = []
        for player in mu_ranked_players:
                            nets.append(player.get_w())
+                           biases.append(player.get_bias())
                            fitness.append(player.get_fitness())
+       
        children = []
        for x in range(len(self.players) - mu):
-                           co = CrossOver(nets,fitness)
+                           co = CrossOver(nets,fitness, biases)
                            children.append(co.make_child(z))
-       
        for c in children:
-           print(c.get_name())
+           print("NEXTGEN CHILD PLAYER NAME: " , c.name)
            nextGen.append(c)
            
        self.players = nextGen
