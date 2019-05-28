@@ -209,7 +209,7 @@ class MessageSummarizer(object):
         self.verbose = verbose
 
     def print_message(self, message):
-        print(message)
+    # print(message)
 
     def summarize_messages(self, raw_messages):
         if self.verbose == 0: return

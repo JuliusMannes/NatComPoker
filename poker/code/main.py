@@ -17,11 +17,11 @@ for x in range(8):
     c = Dense(3, name = 'second')(b)
     models.append(Model(inputs=a, outputs=c))
     
-generations = 2
+generations = 4
 amount_per_generation = 1
 
 game_room = GameRoom(models, generations, amount_per_generation)
-game_room.play_rounds()
+game_room.train_generations()
 
 #config.register_player(name="f2", algorithm=FishPlayer())
 #config.register_player(name="f3", algorithm=FishPlayer())

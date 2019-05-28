@@ -37,14 +37,11 @@ class EvoPlayer(BasePokerPlayer):
     def add_game_win(self):
         self.games_played += 1
         self.games_won += 1
-        print("ADD WIN")
     
     def add_game_lose(self):
         self.games_played += 1
 
     def get_fitness(self):
-        print("won", self.games_won)
-        print("total", self.games_played)
         return self.games_won/self.games_played
     
     def get_bias(self):
@@ -55,16 +52,11 @@ class EvoPlayer(BasePokerPlayer):
     def get_w(self):
         first = self.model.get_layer('first').get_weights()[0]
         second = self.model.get_layer('second').get_weights()[0]
-        print("SHAPE", self.model.get_layer('second').get_weights()[0].shape)
-        print("SECOND", second)
         return (first, second)
     
     def declare_action(self, valid_actions, hole_card, round_state):
         #print(valid_actions)
         #print(self.inputs.shape)
-        print("pot: ", round_state['pot'])
-        print("sb: ",round_state['small_blind_pos'])
-        print("bb: ",round_state['big_blind_pos'])
         community_card = round_state['community_card']
         self.inputs[0][7] = estimate_hole_card_win_rate(nb_simulation=NB_SIMULATION,
                                                nb_player=int(self.inputs[0][2]),

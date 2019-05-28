@@ -19,8 +19,8 @@ class CrossOver():
         parent_1,parent_2 = choice(self.net.shape[0],2,p=self.fit,replace =False)
         self.parent1 = parent_1
         self.parent2 = parent_2
-        print("PARENT1: ", self.parent1)#maybe better to use return
-        print("PARENT2: ", self.parent2)#maybe better to use return
+        #  print("PARENT1: ", self.parent1)#maybe better to use return
+        #print("PARENT2: ", self.parent2)#maybe better to use return
 
     #TODO: instead of 50/50 weights from parents, make it based on fitness from parents
 
@@ -42,10 +42,6 @@ class CrossOver():
         b = Dense(6, name = 'first')(a)
         c = Dense(3, name = 'second')(b)
         model = Model(inputs=a,outputs=c)
-        print(child[0])
-        print(child[1])
-        print(child[2])
-        print(child[3])
         model.get_layer('first').set_weights((child[0],child[1]))
         model.get_layer('second').set_weights((child[2],child[3]))
 
