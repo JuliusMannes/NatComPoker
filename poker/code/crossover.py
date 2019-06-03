@@ -15,16 +15,11 @@ class CrossOver():
           self.parent2 = 0
                 
     def get_parents(self):
-        print(self.fit)
         parent_1,parent_2 = choice(self.net.shape[0],2,p=self.fit,replace =False)
         self.parent1 = parent_1
         self.parent2 = parent_2
-        #  print("PARENT1: ", self.parent1)#maybe better to use return
-        #print("PARENT2: ", self.parent2)#maybe better to use return
 
-    #TODO: instead of 50/50 weights from parents, make it based on fitness from parents
-
-    def make_child(self, z): ##add randomness
+    def make_child(self, z): 
         child = []
         self.get_parents()
         for x in range(self.net.shape[1]):
@@ -37,52 +32,34 @@ class CrossOver():
                 child.append(self.biases[self.parent2][x])
         child = self.mutate(child)
         from evo_player import EvoPlayer
-        #myInit = 0 ##assign weight
         a = Input(shape=(8,))
         b = Dense(6, name = 'first')(a)
         c = Dense(3, name = 'second')(b)
         model = Model(inputs=a,outputs=c)
         model.get_layer('first').set_weights((child[0],child[1]))
         model.get_layer('second').set_weights((child[2],child[3]))
-
+        #create new child, with a name tag corresponding to the current generation z
         child = EvoPlayer(model,"player " + str(z) +"-"+str(1000*random.random()))
         return child
     
 
     
-    def mutate(self,ind): ## find random values
+    def mutate(self,ind):
         for x in range(len(ind)):
             r = random.random()
-            if r < 0.1:
-                if r < 0.05:
-                    ind[x] = ind[x] *0.9
-                else:
-                    ind[x] = ind[x]*1.1
+            for gene in ind[0]:
+                if r < 0.01:
+                    if r < 0.005:
+                        ind[x] = ind[x] *0.9
+                    else:
+                        ind[x] = ind[x]*1.1
+            for gene in ind[2]:
+                if r < 0.01:
+                    if r < 0.005:
+                        ind[x] = ind[x] *0.9
+                    else:
+                        ind[x] = ind[x]*1.1
+            ##indices 0 and 2 are the weights of layer 1 and 2, indices 1 and 3 are biases
+            #currently we do not crossover or mutate biases.
         return ind        
-
-
-    def print_status():
-        # open a (new) file to write
-        outF = open("myOutFile.txt", "w")
-        for line in range(len(net)):
-            # write weights to output file
-            outF.write("writing weights no: " , line)
-            outF.write("\n")
-            outF.write(net[line])
-            outF.write("\n")
-        for line in range(len(fit)):
-            # write fitnesses to output file
-            outF.write("writing fitness no: " , line)
-            outF.write("\n")
-            outF.write(fit[line])
-            outF.write("\n")
-            outF.write("parent1:")
-            outF.write("\n")
-            outF.write(self.parent1)
-            outF.write("\n")
-            outF.write("parent2:")
-            outF.write("\n")
-            outF.write(self.parent2)
-            outF.write("\n")
-            outF.close()
 

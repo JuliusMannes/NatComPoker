@@ -42,7 +42,10 @@ class EvoPlayer(BasePokerPlayer):
         self.games_played += 1
 
     def get_fitness(self):
-        return self.games_won/self.games_played
+        if self.games_played > 0:
+            return self.games_won/self.games_played
+        else:
+            return 0
     
     def get_bias(self):
         first = self.model.get_layer('first').get_weights()[1]
@@ -72,6 +75,7 @@ class EvoPlayer(BasePokerPlayer):
         #print(action['action'])
         #print(action['amount'])
         if action['action'] == "raise":
+            
             #action['amount'] = (action['amount']['max'] - action['amount']['min'])*random.random() + action['amount']['min']
             action['amount'] = action['amount']['max']
         
@@ -107,3 +111,5 @@ class EvoPlayer(BasePokerPlayer):
         pass
 
 
+    def setup_ai():
+        return FishPlayer()
