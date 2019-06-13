@@ -14,10 +14,12 @@ import os
 from pypokerengine.api.game import setup_config, start_poker
 from evo_player import EvoPlayer
 from crossover import CrossOver
+import timeit
 
 class GameRoom():
 
     def __init__(self, algorithms, generations, rounds_per_gen):
+        # initialization and shuffling of players, saving important values
         self.algorithms = np.array(algorithms)
         self.generations = generations
         self.rounds_per_gen = rounds_per_gen
@@ -25,17 +27,21 @@ class GameRoom():
         self.players = self.shuffle_players()
         
     def shuffle_players(self):
+        # shuflle the players existing in the class and returning this in an array
         indices = np.arange(len(self.players))
         np.random.shuffle(indices)
         return np.array(self.players)[indices]
 
     def init_players(self):
+        # using the existing algorithms to create new players each with its own algorithm
         players = []
         for x in range(len(self.algorithms)):
             players.append(EvoPlayer(self.algorithms[x],"player "+ str(x)))
         return players
                            
     def update_generation(self, mu, z):
+       # getting the top mu players
+       # and creating children via mutation and crossover classes.
        nextGen = []
        ranked_players = sorted(self.players, key=lambda x: x.games_won, reverse=True)
        mu_ranked_players = ranked_players[:mu]
@@ -59,7 +65,7 @@ class GameRoom():
                            player.games_won = 0
        
        children = []
-       for x in range(len(self.players) - mu):
+       for _ in range(len(self.players) - mu):
                            co = CrossOver(nets,fitness, biases)
                            children.append(co.make_child(z))
        for c in children:
@@ -68,8 +74,9 @@ class GameRoom():
            
        self.players = nextGen
             
-    #start function
+       
     def play_rounds(self):
+        # playing z generations and for each generation playing x rounds.
         for z in range(self.generations):
             print("Playing generation: ", z)
             for x in range(self.rounds_per_gen):
@@ -78,7 +85,10 @@ class GameRoom():
                 self.play_game()
             self.update_generation(4, z)
 
+
     def find_winner(self, game_result):
+        # function returns the winning player depending on the size of the 
+        # player stacks at the end of the game
         stacks = []
         players = []
         for x in game_result['message']['game_information']['seats']:
@@ -89,6 +99,8 @@ class GameRoom():
         return winner
             
     def play_game(self):
+        # takes slices of the shuffled players list and creates a game per 
+        # group of players
         tables  =2
         for table in range(tables):
             players = self.players[table*4:4*(table+1)]
@@ -110,6 +122,7 @@ class GameRoom():
 
     
     def save_players(self, players,stage):
+        #create new files with current weights of the networks.
         name = str.replace("saved_players/model_x.json","model",str(stage))
         weights = str.replace("saved_players/model_x.h5","model",str(stage))
         for p in players:
@@ -119,6 +132,8 @@ class GameRoom():
             # serialize weights to HDF5
             p.model.save_weights(str.replace(weights,"x",p.name))
             print("Saved model to disk")
+            
+            
     def random_benchmark(self, player, rounds, stage, file): ##gets best player of the last gen for benchmarking
         output = 0
         for x in range(rounds):

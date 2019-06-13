@@ -7,6 +7,7 @@ from numpy.random import choice
 class CrossOver():
                 
     def __init__(self, net, fit, biases):
+          # initializing crossover object, saving parameters
           self.net = np.array(net)
           normFit = fit/(np.sum(fit))
           self.fit = normFit
@@ -15,11 +16,13 @@ class CrossOver():
           self.parent2 = 0
                 
     def get_parents(self):
+        # get parents
         parent_1,parent_2 = choice(self.net.shape[0],2,p=self.fit,replace =False)
         self.parent1 = parent_1
         self.parent2 = parent_2
 
     def make_child(self, z): 
+        # create crossovers from parents and mutate child
         child = []
         self.get_parents()
         for x in range(self.net.shape[1]):
@@ -45,6 +48,7 @@ class CrossOver():
 
     
     def mutate(self,ind):
+        # mutate the list of values depending on a factor of its own value.
         for x in range(len(ind)):
             r = random.random()
             for gene in ind[0]:
