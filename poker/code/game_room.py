@@ -34,7 +34,24 @@ class GameRoom():
         for x in range(len(self.algorithms)):
             players.append(EvoPlayer(self.algorithms[x],"player "+ str(x)))
         return players
-                           
+    
+    def update_generation_3(self,mu,z): #this is only for experiment no3
+        nextGen =[]
+        ranked_players = sorted(self.players, key=lambda x: x.games_won, reverse=True)
+        mu_ranked_players = ranked_players[:mu]
+        for p in mu_ranked_players:
+                #print("NEXTGEN PLAYER NAME: " , p.name)
+            nextGen.append(p)
+            #To-do: mutation and crossover
+        children = []
+        co = CrossOver()
+        for p in nextGen:
+            children.append(co.third_mutate(p))
+        for c in children:
+            nextGen.append(c)
+        
+        self.players = nextGen
+            
     def update_generation(self, mu, z):
        nextGen = []
        ranked_players = sorted(self.players, key=lambda x: x.games_won, reverse=True)
@@ -63,7 +80,6 @@ class GameRoom():
                            co = CrossOver(nets,fitness, biases)
                            children.append(co.make_child(z))
        for c in children:
-           #print("NEXTGEN CHILD PLAYER NAME: " , c.name)
            nextGen.append(c)
            
        self.players = nextGen
@@ -75,8 +91,8 @@ class GameRoom():
             for x in range(self.rounds_per_gen):
                 print("playing round: ",x)
                 self.players = self.shuffle_players()
-                self.play_game()
-            self.update_generation(4, z)
+                self.play_game(z)
+            self.update_generation_3(4, z)
 
     def find_winner(self, game_result):
         stacks = []
@@ -88,7 +104,7 @@ class GameRoom():
         winner = players[idx]
         return winner
             
-    def play_game(self):
+    def play_game(self,z):
         tables  =2
         for table in range(tables):
             players = self.players[table*4:4*(table+1)]
@@ -98,6 +114,7 @@ class GameRoom():
             #print("added player: ", p.name)
             print("play game")
             game_result = start_poker(config, verbose=0)
+
             winner = self.find_winner(game_result)
             
             for p in players:
@@ -128,7 +145,7 @@ class GameRoom():
             config.register_player(name="f2", algorithm=RandomPlayer())
             config.register_player(name="f3", algorithm=RandomPlayer())
             config.register_player(name="f4", algorithm=RandomPlayer())
-            if stage % 3 == 0 and x % 9 == 0:
+            if x % 26 == 0:
                 game_result = start_poker(config, verbose=1)
             else:
                 game_result = start_poker(config, verbose=0)
@@ -156,7 +173,7 @@ class GameRoom():
             config.register_player(name="f2", algorithm=FishPlayer())
             config.register_player(name="f3", algorithm=FishPlayer())
             config.register_player(name="f4", algorithm=FishPlayer())
-            if stage % 3 == 0 and x % 9 == 0:
+            if x % 26 == 0:
                 game_result = start_poker(config, verbose=1)
             else:
                 game_result = start_poker(config, verbose=0)
@@ -184,7 +201,7 @@ class GameRoom():
             config.register_player(name="f2", algorithm=HonestPlayer())
             config.register_player(name="f3", algorithm=HonestPlayer())
             config.register_player(name="f4", algorithm=HonestPlayer())
-            if stage % 3 == 0 and x % 9 == 0:
+            if x % 26 == 0:
                 game_result = start_poker(config, verbose=1)
             else:
                 game_result = start_poker(config, verbose=0)
@@ -214,10 +231,11 @@ class GameRoom():
         fish = 0
         random = 0
         stage = 0
-        self.fish_benchmark(self.players[0],50,stage,outFish)
+        self.fish_benchmark(self.players[0],50,stage,outFish)#
         self.honest_benchmark(self.players[0],50,stage,outHonest)
         self.random_benchmark(self.players[0],50,stage,outRandom)
         while (honest < 3) and (fish < 3) and (random < 3) and (stage < 20):
+            print("Stage: ", stage)
             self.play_rounds()
             ranked_players = sorted(self.players, key=lambda x: x.games_won, reverse=True)
             fbench = self.fish_benchmark(self.players[0],50,stage,outFish)
