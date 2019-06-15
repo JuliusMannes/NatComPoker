@@ -1,1 +1,4 @@
+<<<<<<< HEAD
 At stage: 0, the player has won: 15 
+=======
+>>>>>>> 2db0fdf4aeda0f4a5127edc0f01574f2ae17b553

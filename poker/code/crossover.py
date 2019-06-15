@@ -6,7 +6,12 @@ import numpy as np
 from numpy.random import choice
 class CrossOver():
                 
+<<<<<<< HEAD
     def __init__(self, net = 0, fit = 0, biases = [[0,0,0,0,0,0],[0,0,0]]):
+=======
+    def __init__(self, net, fit, biases):
+          # initializing crossover object, saving parameters
+>>>>>>> 2db0fdf4aeda0f4a5127edc0f01574f2ae17b553
           self.net = np.array(net)
           normFit = fit/(np.sum(fit))
           self.fit = normFit
@@ -15,9 +20,11 @@ class CrossOver():
           self.parent2 = 0
                 
     def get_parents(self):
+        # get parents
         parent_1,parent_2 = choice(self.net.shape[0],2,p=self.fit,replace =False)
         self.parent1 = parent_1
         self.parent2 = parent_2
+<<<<<<< HEAD
     
     def make_mutated_child(self, z):
         child = [] #empty new offspring
@@ -36,6 +43,11 @@ class CrossOver():
         child = EvoPlayer(model,"player " + str(z) +"-"+str(1000*random.random()))
         
     def make_child(self, z):
+=======
+
+    def make_child(self, z): 
+        # create crossovers from parents and mutate child
+>>>>>>> 2db0fdf4aeda0f4a5127edc0f01574f2ae17b553
         child = []
         self.get_parents()
         temp_1 = []
@@ -79,6 +91,7 @@ class CrossOver():
 
     
     def mutate(self,ind):
+        # mutate the list of values depending on a factor of its own value.
         for x in range(len(ind)):
             for gene in range(len(ind[0])):
                 r = random.random()
