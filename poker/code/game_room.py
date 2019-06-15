@@ -113,14 +113,10 @@ class GameRoom():
             players.append(x['name'])
         winner = players[idx]
         return winner
-            
-<<<<<<< HEAD
-    def play_game(self,z):
-=======
+ 
     def play_game(self):
         # takes slices of the shuffled players list and creates a game per 
         # group of players
->>>>>>> 2db0fdf4aeda0f4a5127edc0f01574f2ae17b553
         tables  =2
         for table in range(tables):
             players = self.players[table*4:4*(table+1)]
