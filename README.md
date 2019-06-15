@@ -9,7 +9,9 @@
   
   When you execute the main.py file, you will execute our third experiment. Be aware that one experiment can take easily up   to 52 hours, so I advice you to quit it once you have seen enough. The game loop, or what you will be seeing on the         terminal output is described in our report. 
   
-  I hope it is not too messy in here...
+  I hope it is not too messy in here...The following sections on this page were mostly for us during the course of the project. If you like, you can of course check them out. This is not necessary however.
+  
+  
 ## Resources 
   https://medium.com/@andreasthiele/building-your-own-no-limit-texas-holdem-poker-bot-in-python-cd9919302c1c
   Here you can find instructions to set up the PyPokerEnvironment and how to play around with it. 
