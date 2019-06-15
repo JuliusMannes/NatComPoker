@@ -7,6 +7,8 @@
   In the code section there are a lot of different .py files, most of which you can ignore, as they are part of the PyPokerEngine. Most of the code from that engine is not changed by us. 
   The 'interesting' pieces of code, or files that we created are all to be found in the /poker/code directory (immediatly     there, so not in the /poker/code/PyPokerEngine directory. We have changed only a few lines in the engine's code to make it   working with our implementation. 
   
+  I hope very much that the code is just executable as is, when all the code was copied to a local destination. Sometimes we had trouble setting things up on different machines. If you run into trouble, we would appreciate if you would contact us before giving us a worse grade. 
+  
   When you execute the main.py file, you will execute our third experiment. Be aware that one experiment can take easily up   to 52 hours, so I advice you to quit it once you have seen enough. The game loop, or what you will be seeing on the         terminal output is described in our report. 
   
   I hope it is not too messy in here...The following sections on this page were mostly for us during the course of the project. If you like, you can of course check them out. This is not necessary however.
