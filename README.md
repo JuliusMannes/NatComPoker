@@ -3,9 +3,9 @@
   ![Poker](https://github.com/JuliusMannes/NatComPoker/blob/master/imgs/img.jpg)
   
 ## Hello, dear teacher! 
-  This is our repository containing the code for the project. 
+  This is our repository, containing the code for the project. 
   In the code section there are a lot of different .py files, most of which you can ignore, as they are part of the PyPokerEngine. Most of the code from that engine is not changed by us. 
-  The 'interesting' pieces of code, or files that we created are all to be found in the /poker/code directory (immediatly     there, so not in the /poker/code/PyPokerEngine directory. We have changed only a few lines in the engine's code to make it   working with our implementation. 
+  The 'interesting' pieces of code, or files that we created are all to be found in the /poker/code directory (immediately     there, so not in the /poker/code/PyPokerEngine directory). We have changed only a few lines in the engine's code to make it   working with our implementation. 
   
   I hope very much that the code is just executable as is, when all the code was copied to a local destination. Sometimes we had trouble setting things up on different machines. If you run into trouble, we would appreciate if you would contact us before giving us a worse grade. 
   
